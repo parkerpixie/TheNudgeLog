@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#5f4b8b" />
+  <meta name="theme-color" content="#153243" />
   <title>The Nudge Log</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.webmanifest" />
 </head>
@@ -12,7 +15,7 @@
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <p class="eyebrow">tiny data, less guessing</p>
+        <p class="eyebrow">observe • log • notice</p>
         <h1>The Nudge Log</h1>
       </div>
       <button id="quickAddBtn" class="icon-button" aria-label="Jump to new log entry">＋</button>
@@ -20,10 +23,15 @@
 
     <main>
       <section id="logTab" class="tab-panel active" aria-labelledby="logTabButton">
+        <div class="intro-strip">
+          <span class="signal-dot"></span>
+          <p>Capture the moment. Let the pattern emerge later.</p>
+        </div>
+
         <form id="nudgeForm" class="card form-card">
           <div class="section-head">
             <div>
-              <p class="step-label">1</p>
+              <p class="step-label">01</p>
               <h2>Who nudged?</h2>
             </div>
             <button type="button" class="text-button" id="clearFormBtn">Reset</button>
@@ -39,9 +47,9 @@
 
           <div class="section-head">
             <div>
-              <p class="step-label">2</p>
+              <p class="step-label">02</p>
               <h2>What kind?</h2>
-              <p class="helper">Pick the closest fit. No thesis required.</p>
+              <p class="helper">Pick the closest fit. No courtroom transcript required.</p>
             </div>
           </div>
 
@@ -67,7 +75,7 @@
 
           <div class="binary-row">
             <div>
-              <p class="step-label">3</p>
+              <p class="step-label">03</p>
               <h2>Input asked for?</h2>
               <p class="helper">Did the other person actually ask for the help, opinion, or correction?</p>
             </div>
@@ -79,7 +87,7 @@
 
           <div class="binary-row">
             <div>
-              <p class="step-label">4</p>
+              <p class="step-label">04</p>
               <h2>Kept going?</h2>
               <p class="helper">Did it continue after an answer or preference was already given?</p>
             </div>
@@ -91,7 +99,7 @@
 
           <label class="note-field" for="note">
             <span>Optional note</span>
-            <textarea id="note" maxlength="180" placeholder="e.g. broom under chair, outfit debate..."></textarea>
+            <textarea id="note" maxlength="180" placeholder="broom under chair, outfit debate..."></textarea>
             <small><span id="noteCount">0</span>/180</small>
           </label>
 
@@ -112,6 +120,32 @@
             <option value="all">All time</option>
           </select>
         </div>
+
+        <article class="card sync-card">
+          <div class="card-title-row">
+            <div>
+              <p class="step-label">SYNC</p>
+              <h3>Keep Mac + phone together</h3>
+            </div>
+            <span id="syncStatus" class="sync-status">Not linked</span>
+          </div>
+          <p class="helper sync-helper">Use one private sync key on both devices. The key is the only thing that links your data.</p>
+          <div id="syncSetup" class="sync-setup">
+            <input id="syncKeyInput" class="sync-input" type="password" autocomplete="off" spellcheck="false" placeholder="Paste or generate a sync key" />
+            <div class="sync-actions">
+              <button id="generateSyncKeyBtn" class="secondary-button" type="button">Generate key</button>
+              <button id="linkSyncBtn" class="primary-button compact" type="button">Link this device</button>
+            </div>
+          </div>
+          <div id="syncLinked" class="sync-linked" hidden>
+            <div class="sync-actions">
+              <button id="syncNowBtn" class="secondary-button" type="button">Sync now</button>
+              <button id="copySyncKeyBtn" class="secondary-button" type="button">Copy key</button>
+              <button id="unlinkSyncBtn" class="ghost-button" type="button">Unlink</button>
+            </div>
+            <p id="lastSyncText" class="muted"></p>
+          </div>
+        </article>
 
         <div class="stats-grid">
           <article class="stat-card">
@@ -151,7 +185,7 @@
 
         <div class="danger-zone">
           <button id="clearAllBtn" class="danger-button" type="button">Clear all data</button>
-          <p>Everything lives only in this browser.</p>
+          <p>Linked devices will reflect deletions after sync.</p>
         </div>
       </section>
     </main>
