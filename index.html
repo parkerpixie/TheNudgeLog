@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#5f4b8b" />
+  <title>The Nudge Log</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">tiny data, less guessing</p>
+        <h1>The Nudge Log</h1>
+      </div>
+      <button id="quickAddBtn" class="icon-button" aria-label="Jump to new log entry">＋</button>
+    </header>
+
+    <main>
+      <section id="logTab" class="tab-panel active" aria-labelledby="logTabButton">
+        <form id="nudgeForm" class="card form-card">
+          <div class="section-head">
+            <div>
+              <p class="step-label">1</p>
+              <h2>Who nudged?</h2>
+            </div>
+            <button type="button" class="text-button" id="clearFormBtn">Reset</button>
+          </div>
+
+          <div class="choice-grid three" role="group" aria-label="Who nudged?">
+            <button type="button" class="choice person-choice" data-field="person" data-value="Jen">Jen</button>
+            <button type="button" class="choice person-choice" data-field="person" data-value="Blake">Blake</button>
+            <button type="button" class="choice person-choice" data-field="person" data-value="Porter">Porter</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="section-head">
+            <div>
+              <p class="step-label">2</p>
+              <h2>What kind?</h2>
+              <p class="helper">Pick the closest fit. No thesis required.</p>
+            </div>
+          </div>
+
+          <div class="choice-grid">
+            <button type="button" class="choice type-choice" data-field="type" data-value="Direct">
+              <span>Direct</span><small>Told someone what / when / how</small>
+            </button>
+            <button type="button" class="choice type-choice" data-field="type" data-value="Correct">
+              <span>Correct</span><small>Changed how they were already doing it</small>
+            </button>
+            <button type="button" class="choice type-choice" data-field="type" data-value="Justify">
+              <span>Justify</span><small>Asked them to explain or defend a choice</small>
+            </button>
+            <button type="button" class="choice type-choice" data-field="type" data-value="Monitor">
+              <span>Monitor</span><small>Commented on whether / how it was happening</small>
+            </button>
+            <button type="button" class="choice type-choice" data-field="type" data-value="Handoff">
+              <span>Handoff</span><small>Expected someone else to initiate or manage it</small>
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="binary-row">
+            <div>
+              <p class="step-label">3</p>
+              <h2>Input asked for?</h2>
+              <p class="helper">Did the other person actually ask for the help, opinion, or correction?</p>
+            </div>
+            <div class="segmented" role="group" aria-label="Input asked for?">
+              <button type="button" data-field="requested" data-value="yes">Yes</button>
+              <button type="button" data-field="requested" data-value="no">No</button>
+            </div>
+          </div>
+
+          <div class="binary-row">
+            <div>
+              <p class="step-label">4</p>
+              <h2>Kept going?</h2>
+              <p class="helper">Did it continue after an answer or preference was already given?</p>
+            </div>
+            <div class="segmented" role="group" aria-label="Kept going?">
+              <button type="button" data-field="keptGoing" data-value="yes">Yes</button>
+              <button type="button" data-field="keptGoing" data-value="no">No</button>
+            </div>
+          </div>
+
+          <label class="note-field" for="note">
+            <span>Optional note</span>
+            <textarea id="note" maxlength="180" placeholder="e.g. broom under chair, outfit debate..."></textarea>
+            <small><span id="noteCount">0</span>/180</small>
+          </label>
+
+          <button class="primary-button" type="submit">Log this nudge</button>
+          <p id="formMessage" class="form-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="dashboardTab" class="tab-panel" aria-labelledby="dashboardTabButton">
+        <div class="dashboard-head">
+          <div>
+            <p class="eyebrow">patterns, not verdicts</p>
+            <h2>Dashboard</h2>
+          </div>
+          <select id="rangeFilter" aria-label="Dashboard date range">
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Total nudges</span>
+            <strong id="totalCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Unasked-for</span>
+            <strong id="unaskedCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Kept going</span>
+            <strong id="keptGoingCount">0</strong>
+          </article>
+        </div>
+
+        <article class="card">
+          <div class="card-title-row">
+            <h3>By person</h3>
+            <span id="personRangeLabel" class="muted"></span>
+          </div>
+          <div id="personBreakdown" class="breakdown-list empty-state">No entries yet.</div>
+        </article>
+
+        <article class="card">
+          <h3>By type</h3>
+          <div id="typeBreakdown" class="breakdown-list empty-state">No entries yet.</div>
+        </article>
+
+        <article class="card">
+          <div class="card-title-row">
+            <h3>Recent nudges</h3>
+            <button id="exportBtn" class="text-button" type="button">Export CSV</button>
+          </div>
+          <div id="recentEntries" class="entry-list empty-state">Nothing logged yet.</div>
+        </article>
+
+        <div class="danger-zone">
+          <button id="clearAllBtn" class="danger-button" type="button">Clear all data</button>
+          <p>Everything lives only in this browser.</p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Primary">
+      <button id="logTabButton" class="nav-button active" data-tab="logTab" type="button">
+        <span class="nav-icon">✎</span>
+        <span>Log</span>
+      </button>
+      <button id="dashboardTabButton" class="nav-button" data-tab="dashboardTab" type="button">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
