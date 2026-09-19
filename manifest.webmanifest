@@ -1,0 +1,9 @@
+{
+  "name": "The Nudge Log",
+  "short_name": "Nudge Log",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fbf8f3",
+  "theme_color": "#5f4b8b",
+  "description": "A small mobile-first personal interaction log."
+}
